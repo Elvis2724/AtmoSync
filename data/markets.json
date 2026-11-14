@@ -1,0 +1,102 @@
+[
+  {
+    "market_id": "MKT-RTM",
+    "name": "Rotterdam Europort",
+    "country": "Netherlands",
+    "lat": 51.95,
+    "lon": 4.14,
+    "price_multiplier": 1.08,
+    "reroute_fee_usd": 4200.0,
+    "port_handling_hours": 6.0
+  },
+  {
+    "market_id": "MKT-ALG",
+    "name": "Algeciras Hub",
+    "country": "Spain",
+    "lat": 36.13,
+    "lon": -5.43,
+    "price_multiplier": 0.96,
+    "reroute_fee_usd": 3100.0,
+    "port_handling_hours": 4.5
+  },
+  {
+    "market_id": "MKT-MRS",
+    "name": "Marseille-Fos",
+    "country": "France",
+    "lat": 43.34,
+    "lon": 5.16,
+    "price_multiplier": 1.02,
+    "reroute_fee_usd": 3600.0,
+    "port_handling_hours": 5.0
+  },
+  {
+    "market_id": "MKT-MIA",
+    "name": "PortMiami Cold Hub",
+    "country": "USA",
+    "lat": 25.77,
+    "lon": -80.17,
+    "price_multiplier": 1.04,
+    "reroute_fee_usd": 2900.0,
+    "port_handling_hours": 4.0
+  },
+  {
+    "market_id": "MKT-SAV",
+    "name": "Savannah Terminal",
+    "country": "USA",
+    "lat": 32.08,
+    "lon": -81.09,
+    "price_multiplier": 0.99,
+    "reroute_fee_usd": 3200.0,
+    "port_handling_hours": 4.5
+  },
+  {
+    "market_id": "MKT-NYC",
+    "name": "Newark / NY Metro",
+    "country": "USA",
+    "lat": 40.68,
+    "lon": -74.15,
+    "price_multiplier": 1.12,
+    "reroute_fee_usd": 4800.0,
+    "port_handling_hours": 6.5
+  },
+  {
+    "market_id": "MKT-SIN",
+    "name": "Tuas Mega Port",
+    "country": "Singapore",
+    "lat": 1.29,
+    "lon": 103.64,
+    "price_multiplier": 1.06,
+    "reroute_fee_usd": 3500.0,
+    "port_handling_hours": 4.0
+  },
+  {
+    "market_id": "MKT-HKG",
+    "name": "Kwai Tsing Terminal",
+    "country": "Hong Kong",
+    "lat": 22.34,
+    "lon": 114.12,
+    "price_multiplier": 1.11,
+    "reroute_fee_usd": 4100.0,
+    "port_handling_hours": 5.0
+  },
+  {
+    "market_id": "MKT-TYO",
+    "name": "Tokyo Oi Cold Pier",
+    "country": "Japan",
+    "lat": 35.61,
+    "lon": 139.78,
+    "price_multiplier": 1.16,
+    "reroute_fee_usd": 5100.0,
+    "port_handling_hours": 6.0
+  },
+  {
+    "market_id": "MKT-DXB",
+    "name": "Jebel Ali Cold Chain",
+    "country": "UAE",
+    "lat": 25.01,
+    "lon": 55.06,
+    "price_multiplier": 1.05,
+    "reroute_fee_usd": 3400.0,
+    "port_handling_hours": 4.5
+  }
+]

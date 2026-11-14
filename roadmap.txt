@@ -1,0 +1,75 @@
+===============================================================================
+ATMOSYNC: MICRO-CLIMATE ARBITRAGE ANALYTICS & COLD-CHAIN BI
+PROJECT ROADMAP & IMPLEMENTATION PHASES
+===============================================================================
+
+OVERVIEW
+--------
+AtmoSync is a real-time supply-chain telemetry and quantitative spoilage
+arbitrage platform. It ingests high-frequency IoT container sensor streams
+(temperature, relative humidity, vibration shock, CO2, ethylene, GPS), computes
+dynamic Q10 / Arrhenius cargo degradation velocity, and evaluates whether
+rerouting an at-risk reefer container to a closer secondary port yields higher
+net cargo value ("Spoilage Arbitrage").
+
+-------------------------------------------------------------------------------
+PHASE 1: IOT TELEMETRY INGESTION & SEED DATA CATALOG (COMPLETED)
+-------------------------------------------------------------------------------
+[x] Establish reference datasets in `data/`:
+    - `data/commodities.json`: Perishable profiles (Avocados, Berries, A5 Wagyu,
+      Monoclonal Biologics, Cut Orchids, Bluefin Tuna) with Q10 thermal factors.
+    - `data/markets.json`: Global port hubs, GPS coordinates, spot price
+      multipliers, port handling times, and reroute fees.
+    - `data/fleet_containers.json`: Active maritime reefer fleet state.
+[x] Simulate Apache Kafka telemetry stream (`iot.reefer.telemetry.v1`) with
+    micro-climate drift modes (Thermal Drift, Humidity/Temp Spike, Vibration).
+
+-------------------------------------------------------------------------------
+PHASE 2: ELT WAREHOUSE & DBT STAGING LAYER (COMPLETED)
+-------------------------------------------------------------------------------
+[x] Relational analytical warehouse in `powerbi db/database/atmosync.db`:
+    - `raw_iot_stream`: Raw Kafka JSON event landing table.
+    - `stg_telemetry`: Cleaned, typed sensor & GPS time-series table.
+    - `mart_spoilage_arbitrage`: Executive arbitrage & reroute decision table.
+[x] SQL transformation models in `dbt/models/`:
+    - `stg_iot_telemetry.sql`: JSON payload extraction & sensor bounds filtering.
+    - `mart_spoilage_arbitrage.sql`: Q10 degradation & time-to-spoilage marts.
+
+-------------------------------------------------------------------------------
+PHASE 3: QUANTITATIVE SPOILAGE ARBITRAGE ENGINE (COMPLETED)
+-------------------------------------------------------------------------------
+[x] Modularize backend engine into dedicated Python modules inside `backend/`:
+    - `config.py`: Central workspace paths & simulation parameters.
+    - `models.py`: Dataclasses for CommodityProfile, MarketHub, ContainerState.
+    - `arbitrage_calculator.py`: Haversine routing, Arrhenius/Q10 degradation
+      curve modeling, and Primary vs. Secondary Market Net Value optimizer.
+    - `database_manager.py`: SQLite ELT persistence and Star-Schema CSV sync.
+    - `atmosync_engine.py`: Core simulation orchestrator & alert dispatcher.
+    - `app.py`: Threading HTTP & REST API server (`http://127.0.0.1:8050`).
+
+-------------------------------------------------------------------------------
+PHASE 4: EXECUTIVE TRADING DESK UI & POWER BI INTEGRATION (COMPLETED)
+-------------------------------------------------------------------------------
+[x] Modularize frontend application inside `frontend/`:
+    - `index.html`: Executive KPI strip, route map, inspector & trading table.
+    - `styles.css`: Institutional dark-mode quantitative styling.
+    - `mock_data.js`: Standalone offline fallback dataset & state generator.
+    - `charts.js`: Interactive SVG global maritime map & HTML5 Canvas curves.
+    - `dashboard.js`: Live API polling, anomaly injection, and reroute actions.
+[x] Power BI Star-Schema & DAX toolkit inside `powerbi db/`:
+    - Auto-synced Star-Schema CSVs (`Fact_Spoilage_Arbitrage.csv`,
+      `Fact_IoT_Telemetry.csv`, `Dim_Commodities.csv`, `Dim_Markets.csv`).
+    - `AtmoSync_DAX_Measures.dax`, `PowerQuery_M_Loader.pq`, `AtmoSync_Theme.json`.
+
+-------------------------------------------------------------------------------
+PHASE 5: FUTURE ENHANCEMENTS (UPCOMING MILESTONES)
+-------------------------------------------------------------------------------
+[ ] Live Weather & Ocean Current API Overlay (NOAA / Open-Meteo Marine) to
+    dynamically adjust vessel speed and port congestion hours.
+[ ] Multi-Leg Intermodal Rerouting (Sea-to-Air and Sea-to-Rail cold-chain handoff
+    cost/benefit optimization for ultra-high-value pharmaceuticals).
+[ ] Automated Carrier EDI / Webhook Integration for instant bill-of-lading
+    diversion orders and customs pre-clearance at secondary ports.
+[ ] Machine Learning Compressor Fault Prediction (LSTM anomaly detection on
+    compressor power draw and CO2 respiration curves 12 hours before thermal spike).
+===============================================================================

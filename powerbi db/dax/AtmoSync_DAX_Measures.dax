@@ -1,0 +1,116 @@
+// ============================================================================
+// AtmoSync: Micro-Climate Arbitrage Analytics — Power BI DAX Measures Library
+// Import Star-Schema Tables from: c:\Users\fthom\Desktop\atmosync777\powerbi db\datasets\
+//   1. Fact_Spoilage_Arbitrage (1 -> * with Fact_IoT_Telemetry on container_id)
+//   2. Fact_IoT_Telemetry
+//   3. Dim_Commodities (1 -> * on commodity_id)
+//   4. Dim_Markets (1 -> * on primary_market_id = market_id)
+// ============================================================================
+
+// --- 1. CORE FINANCIAL & SPOILAGE ARBITRAGE METRICS ---
+
+Total Spoilage Arbitrage ($) =
+SUM ( Fact_Spoilage_Arbitrage[spoilage_arbitrage_usd] )
+
+Primary Route Expected Value ($) =
+SUM ( Fact_Spoilage_Arbitrage[primary_expected_value_usd] )
+
+Secondary Reroute Net Value ($) =
+SUM ( Fact_Spoilage_Arbitrage[secondary_net_value_usd] )
+
+Total Fleet Base Cargo Value ($) =
+SUM ( Fact_Spoilage_Arbitrage[base_cargo_value_usd] )
+
+Value at Risk (Spoilage Exposure $) =
+SUMX (
+    Fact_Spoilage_Arbitrage,
+    MAX (
+        0,
+        Fact_Spoilage_Arbitrage[base_cargo_value_usd]
+            - Fact_Spoilage_Arbitrage[primary_expected_value_usd]
+    )
+)
+
+Arbitrage Uplift % =
+DIVIDE (
+    [Total Spoilage Arbitrage ($)],
+    [Primary Route Expected Value ($)],
+    0
+)
+
+
+// --- 2. MICRO-CLIMATE & DEGRADATION CURVE METRICS ---
+
+Avg Degradation Velocity (x Nominal) =
+AVERAGE ( Fact_Spoilage_Arbitrage[degradation_multiplier] )
+
+Min Time to Spoilage (Hrs) =
+MIN ( Fact_Spoilage_Arbitrage[time_to_spoilage_hrs] )
+
+Avg Remaining Cargo Quality % =
+AVERAGE ( Fact_Spoilage_Arbitrage[quality_remaining_pct] ) / 100.0
+
+Temperature Drift Above Optimal (C) =
+AVERAGEX (
+    Fact_Spoilage_Arbitrage,
+    Fact_Spoilage_Arbitrage[temp_c] - Fact_Spoilage_Arbitrage[optimal_temp_c]
+)
+
+Spoilage Buffer vs Primary ETA (Hrs) =
+AVERAGEX (
+    Fact_Spoilage_Arbitrage,
+    Fact_Spoilage_Arbitrage[time_to_spoilage_hrs] - Fact_Spoilage_Arbitrage[primary_eta_hrs]
+)
+
+
+// --- 3. FLEET RISK & ALERTING KPI COUNTS ---
+
+Active Containers Count =
+DISTINCTCOUNT ( Fact_Spoilage_Arbitrage[container_id] )
+
+Critical Arbitrage Containers =
+CALCULATE (
+    DISTINCTCOUNT ( Fact_Spoilage_Arbitrage[container_id] ),
+    Fact_Spoilage_Arbitrage[risk_status] = "CRITICAL ARBITRAGE"
+)
+
+At-Risk Fleet Count =
+CALCULATE (
+    DISTINCTCOUNT ( Fact_Spoilage_Arbitrage[container_id] ),
+    Fact_Spoilage_Arbitrage[risk_status] IN { "CRITICAL ARBITRAGE", "ELEVATED DRIFT" }
+)
+
+At-Risk Fleet Share % =
+DIVIDE ( [At-Risk Fleet Count], [Active Containers Count], 0 )
+
+
+// --- 4. CONDITIONAL FORMATTING MEASURES FOR POWER BI VISUALS ---
+
+Risk Status Color Hex =
+VAR CurrentStatus = SELECTEDVALUE ( Fact_Spoilage_Arbitrage[risk_status] )
+RETURN
+    SWITCH (
+        TRUE (),
+        CurrentStatus = "CRITICAL ARBITRAGE", "#EF4444",
+        CurrentStatus = "ELEVATED DRIFT", "#F59E0B",
+        LEFT ( CurrentStatus, 8 ) = "REROUTED", "#06B6D4",
+        "#10B981"
+    )
+
+Executive Action Banner =
+VAR TopContainer =
+    TOPN (
+        1,
+        Fact_Spoilage_Arbitrage,
+        Fact_Spoilage_Arbitrage[spoilage_arbitrage_usd], DESC
+    )
+VAR TopCID = MAXX ( TopContainer, Fact_Spoilage_Arbitrage[container_id] )
+VAR TopGain = MAXX ( TopContainer, Fact_Spoilage_Arbitrage[spoilage_arbitrage_usd] )
+VAR TopDest = MAXX ( TopContainer, Fact_Spoilage_Arbitrage[recommended_secondary_market] )
+RETURN
+    IF (
+        TopGain > 0,
+        "PRIORITY ALERT: Reroute " & TopCID & " to " & TopDest
+            & " to capture +" & FORMAT ( TopGain, "$#,##0" ) & " Spoilage Arbitrage.",
+        "ALL CONTAINERS NOMINAL: Hold primary shipping routes."
+    )

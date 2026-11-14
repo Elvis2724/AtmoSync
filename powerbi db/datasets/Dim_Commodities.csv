@@ -1,0 +1,7 @@
+commodity_id,name,category,optimal_temp_c,max_safe_temp_c,optimal_humidity_pct,max_safe_humidity_pct,vibration_sensitivity,base_shelf_life_hours,q10_factor,base_cargo_value_usd,unit_weight_tons
+COM-AVO,Hass Avocados (Export Grade A),Produce,5.0,8.5,90.0,94.0,1.35,320.0,2.8,148000.0,22.0
+COM-BER,Organic Blueberries & Raspberries,Produce,1.0,4.0,92.0,95.0,1.75,160.0,3.4,215000.0,16.0
+COM-WAG,Chilled A5 Wagyu Beef Cuts,Proteins,-0.5,2.5,82.0,88.0,0.6,280.0,3.1,490000.0,14.0
+COM-BIO,Monoclonal Biologics (Cold Chain),Pharmaceuticals,4.0,7.0,45.0,60.0,1.5,240.0,4.2,820000.0,6.5
+COM-ORC,Phalaenopsis Cut Orchids,Floriculture,12.5,16.0,88.0,93.0,1.6,190.0,2.9,132000.0,9.0
+COM-SEA,Sashimi-Grade Bluefin Tuna,Seafood,-2.0,1.0,85.0,91.0,0.95,140.0,3.8,385000.0,12.0

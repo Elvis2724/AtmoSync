@@ -1,0 +1,11 @@
+market_id,name,country,lat,lon,price_multiplier,reroute_fee_usd,port_handling_hours
+MKT-RTM,Rotterdam Europort,Netherlands,51.95,4.14,1.08,4200.0,6.0
+MKT-ALG,Algeciras Hub,Spain,36.13,-5.43,0.96,3100.0,4.5
+MKT-MRS,Marseille-Fos,France,43.34,5.16,1.02,3600.0,5.0
+MKT-MIA,PortMiami Cold Hub,USA,25.77,-80.17,1.04,2900.0,4.0
+MKT-SAV,Savannah Terminal,USA,32.08,-81.09,0.99,3200.0,4.5
+MKT-NYC,Newark / NY Metro,USA,40.68,-74.15,1.12,4800.0,6.5
+MKT-SIN,Tuas Mega Port,Singapore,1.29,103.64,1.06,3500.0,4.0
+MKT-HKG,Kwai Tsing Terminal,Hong Kong,22.34,114.12,1.11,4100.0,5.0
+MKT-TYO,Tokyo Oi Cold Pier,Japan,35.61,139.78,1.16,5100.0,6.0
+MKT-DXB,Jebel Ali Cold Chain,UAE,25.01,55.06,1.05,3400.0,4.5

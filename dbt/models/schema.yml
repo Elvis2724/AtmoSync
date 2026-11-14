@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: raw_iot
+    description: "Raw Apache Kafka IoT container telemetry stream landing in SQLite / Snowflake"
+    tables:
+      - name: raw_iot_stream
+        description: "Raw JSON payloads from topic iot.reefer.telemetry.v1"
+
+models:
+  - name: stg_iot_telemetry
+    description: "Cleaned and typed IoT sensor readings (Temp, Humidity, Vibration, CO2, Ethylene, GPS)"
+    columns:
+      - name: container_id
+        tests:
+          - not_null
+      - name: temp_c
+        tests:
+          - not_null
+
+  - name: mart_spoilage_arbitrage
+    description: "Executive Spoilage Arbitrage mart comparing primary vs. secondary port net realization"
+    columns:
+      - name: container_id
+        tests:
+          - unique
+          - not_null
+      - name: degradation_multiplier
+        tests:
+          - not_null

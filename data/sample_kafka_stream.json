@@ -1,0 +1,52 @@
+[
+  {
+    "topic": "iot.reefer.telemetry.v1",
+    "partition": 0,
+    "offset": 100001,
+    "timestamp": "2026-11-14T06:00:00Z",
+    "payload": {
+      "container_id": "ATMO-8824-BIO",
+      "commodity_id": "COM-BIO",
+      "sensors": {
+        "internal_temp_c": 8.6,
+        "humidity_pct": 63.2,
+        "vibration_g": 1.18,
+        "co2_ppm": 620.0,
+        "ethylene_ppm": 0.05
+      },
+      "gps": {
+        "lat": 37.8,
+        "lon": -8.9,
+        "speed_kmh": 41.0
+      },
+      "reefer_unit": {
+        "compressor_status": "CYCLE_FAULT"
+      }
+    }
+  },
+  {
+    "topic": "iot.reefer.telemetry.v1",
+    "partition": 1,
+    "offset": 100002,
+    "timestamp": "2026-11-14T06:00:03Z",
+    "payload": {
+      "container_id": "ATMO-4091-AVO",
+      "commodity_id": "COM-AVO",
+      "sensors": {
+        "internal_temp_c": 10.4,
+        "humidity_pct": 95.8,
+        "vibration_g": 0.92,
+        "co2_ppm": 4850.0,
+        "ethylene_ppm": 2.4
+      },
+      "gps": {
+        "lat": 28.4,
+        "lon": -79.55,
+        "speed_kmh": 38.0
+      },
+      "reefer_unit": {
+        "compressor_status": "DEGRADED"
+      }
+    }
+  }
+]

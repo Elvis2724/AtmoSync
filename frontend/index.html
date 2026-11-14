@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AtmoSync | Micro-Climate Arbitrage Analytics & Cold-Chain BI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top Command Header -->
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-logo">
+        <span class="logo-dot"></span>
+        <span class="logo-ring"></span>
+      </div>
+      <div>
+        <div class="brand-title-row">
+          <h1>ATMOSYNC</h1>
+          <span class="badge-pill badge-live" id="streamStatusBadge">LIVE STREAMING</span>
+          <span class="badge-pill badge-stack">PYTHON &bull; KAFKA &bull; DBT &bull; POWER BI</span>
+        </div>
+        <p class="brand-subtitle">Hyper-Local Micro-Climate Telemetry &amp; Real-Time Spoilage Arbitrage Terminal</p>
+      </div>
+    </div>
+
+    <div class="control-bar">
+      <div class="anomaly-control">
+        <label for="anomalyContainerSelect">Simulate Micro-Climate Spike:</label>
+        <select id="anomalyContainerSelect"></select>
+        <button class="btn btn-warning" id="btnInjectAnomaly" title="Inject a temperature & humidity spike into the selected container">
+          &#9888; Inject Drift
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" id="btnStepTick" title="Advance simulation by 1 tick">+1 Tick</button>
+        <button class="btn btn-primary" id="btnToggleStream">Pause Stream</button>
+        <button class="btn btn-accent" id="btnExportPowerBI" title="Refresh & export Star-Schema CSVs for Power BI">
+          &#8681; Sync Power BI CSVs
+        </button>
+        <button class="btn btn-ghost" id="btnResetFleet" title="Reset fleet simulation">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast notification banner -->
+  <div id="toastBanner" class="toast-banner hidden"></div>
+
+  <!-- Main Workspace Container -->
+  <main class="dashboard-container">
+    <!-- Row 1: Executive KPI Strip -->
+    <section class="kpi-grid">
+      <article class="kpi-card highlight-emerald">
+        <div class="kpi-header">
+          <span class="kpi-label">CAPTURABLE SPOILAGE ARBITRAGE</span>
+          <span class="kpi-tag">NET REROUTE ALPHA</span>
+        </div>
+        <div class="kpi-value" id="kpiArbitrageUsd">$0</div>
+        <div class="kpi-foot" id="kpiArbitrageSub">Across at-risk reefer containers</div>
+      </article>
+
+      <article class="kpi-card highlight-amber">
+        <div class="kpi-header">
+          <span class="kpi-label">AT-RISK CONTAINERS</span>
+          <span class="kpi-tag" id="kpiCriticalTag">0 CRITICAL</span>
+        </div>
+        <div class="kpi-value" id="kpiAtRiskCount">0 / 8</div>
+        <div class="kpi-foot" id="kpiFleetValueSub">Total Fleet Cargo: $0</div>
+      </article>
+
+      <article class="kpi-card highlight-cyan">
+        <div class="kpi-header">
+          <span class="kpi-label">AVG DEGRADATION VELOCITY</span>
+          <span class="kpi-tag">Q10 + RH + VIB</span>
+        </div>
+        <div class="kpi-value" id="kpiAvgDegradation">1.00x</div>
+        <div class="kpi-foot">Arrhenius micro-climate acceleration vs. nominal</div>
+      </article>
+
+      <article class="kpi-card highlight-purple">
+        <div class="kpi-header">
+          <span class="kpi-label">ELT PIPELINE THROUGHPUT</span>
+          <span class="kpi-tag" id="kpiLatencyTag">24 ms</span>
+        </div>
+        <div class="kpi-value" id="kpiEventsCount">0</div>
+        <div class="kpi-foot">Kafka &rarr; Staging &rarr; <code>mart_spoilage_arbitrage</code></div>
+      </article>
+    </section>
+
+    <!-- Row 2: Global Route Arbitrage Map + Selected Container Telemetry & Degradation Curves -->
+    <section class="middle-grid">
+      <!-- Left: Interactive Maritime Route & Micro-Climate Map -->
+      <div class="panel map-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Global Cold-Chain Telemetry &amp; Arbitrage Routing Map</h2>
+            <p class="panel-subtitle">Click any container node to inspect micro-climate sensors &amp; primary vs. secondary port trajectories</p>
+          </div>
+          <div class="map-legend">
+            <span class="legend-item"><i class="dot dot-critical"></i> Critical Arbitrage</span>
+            <span class="legend-item"><i class="dot dot-elevated"></i> Elevated Drift</span>
+            <span class="legend-item"><i class="dot dot-optimal"></i> Optimal</span>
+            <span class="legend-item"><i class="dot dot-rerouted"></i> Rerouted</span>
+            <span class="legend-item"><i class="dot dot-port"></i> Market Hub</span>
+          </div>
+        </div>
+        <div class="map-canvas-wrapper">
+          <svg id="worldRouteMap" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </div>
+
+      <!-- Right: Selected Container Deep-Dive & Degradation Curve -->
+      <div class="panel inspector-panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="inspectorTitle">Container Telemetry &amp; Spoilage Curve</h2>
+            <p class="panel-subtitle" id="inspectorSubtitle">Select a container to analyze real-time sensor drift</p>
+          </div>
+          <span class="status-chip" id="inspectorStatusBadge">LOADING</span>
+        </div>
+
+        <!-- Micro-climate sensor gauges -->
+        <div class="sensor-strip">
+          <div class="sensor-box">
+            <span class="sensor-name">INTERNAL TEMP</span>
+            <strong class="sensor-reading" id="insTemp">-- &deg;C</strong>
+            <span class="sensor-meta" id="insTempTarget">Optimal: -- &deg;C</span>
+          </div>
+          <div class="sensor-box">
+            <span class="sensor-name">REL. HUMIDITY</span>
+            <strong class="sensor-reading" id="insHumidity">-- %</strong>
+            <span class="sensor-meta" id="insHumidityTarget">Optimal: -- %</span>
+          </div>
+          <div class="sensor-box">
+            <span class="sensor-name">VIBRATION SHOCK</span>
+            <strong class="sensor-reading" id="insVibration">-- G</strong>
+            <span class="sensor-meta" id="insGasMeta">CO2: -- ppm | C2H4: -- ppm</span>
+          </div>
+          <div class="sensor-box">
+            <span class="sensor-name">TIME TO SPOILAGE</span>
+            <strong class="sensor-reading" id="insTTS">-- hrs</strong>
+            <span class="sensor-meta" id="insBurnRate">Burn: --x nominal</span>
+          </div>
+        </div>
+
+        <!-- Dual Charts: Real-Time Telemetry History + Quality Degradation Curve vs Transit Time -->
+        <div class="charts-stack">
+          <div class="chart-box">
+            <div class="chart-title-row">
+              <span>Projected Cargo Quality Curve: Primary ETA vs. Secondary Reroute ETA</span>
+              <span class="chart-hint">55% Quality = Commercial Rejection Threshold</span>
+            </div>
+            <canvas id="degradationCurveCanvas" width="540" height="155"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-title-row">
+              <span>Live Container Sensor Stream (Temperature &deg;C &amp; Humidity %)</span>
+              <span class="chart-hint" id="insCompressorTag">Compressor: NOMINAL</span>
+            </div>
+            <canvas id="telemetryHistoryCanvas" width="540" height="135"></canvas>
+          </div>
+        </div>
+
+        <!-- Secondary Market Options Comparison for Selected Container -->
+        <div class="secondary-comparison-box">
+          <div class="comparison-header">
+            <span>Candidate Secondary Market Evaluation</span>
+            <span id="insArbitrageGainText" class="arb-highlight">+$0 Net Arbitrage</span>
+          </div>
+          <div id="insSecondaryOptionsList" class="secondary-options-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Row 3: Executive Spoilage Arbitrage Trading Desk Table -->
+    <section class="panel table-panel">
+      <div class="panel-header">
+        <div>
+          <h2>Spoilage Arbitrage Trading Desk &amp; Reroute Execution Matrix</h2>
+          <p class="panel-subtitle">
+            Live output of <code>mart_spoilage_arbitrage</code> &mdash; dynamically comparing remaining shelf life against primary &amp; secondary port ETAs and spot pricing multipliers
+          </p>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="ALL">All Containers</button>
+          <button class="filter-btn" data-filter="AT_RISK">At-Risk / Arbitrage Only</button>
+          <button class="filter-btn" data-filter="REROUTED">Executed Reroutes</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="arb-table">
+          <thead>
+            <tr>
+              <th>Container / Vessel</th>
+              <th>Commodity</th>
+              <th>Micro-Climate (T / RH / Vib)</th>
+              <th>Degradation</th>
+              <th>Quality Left</th>
+              <th>Time-to-Spoil</th>
+              <th>Primary Destination &amp; ETA</th>
+              <th>Primary Exp. Value</th>
+              <th>Best Secondary Market &amp; ETA</th>
+              <th>Secondary Net Value</th>
+              <th>Spoilage Arbitrage</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="arbitrageTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Row 4: Live Kafka Stream + Automated Alerts + Power BI Star-Schema Connector -->
+    <section class="bottom-grid">
+      <!-- Panel 1: Automated Slack / Email Alert Feed -->
+      <div class="panel stream-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Automated Arbitrage &amp; Drift Alerts</h2>
+            <p class="panel-subtitle">Real-time webhook triggers to <code>#trading-arbitrage-alerts</code> &amp; <code>#dispatch-routing-desk</code></p>
+          </div>
+        </div>
+        <div class="feed-list" id="alertsFeedList"></div>
+      </div>
+
+      <!-- Panel 2: Raw Apache Kafka IoT Stream -->
+      <div class="panel stream-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Apache Kafka Ingestion Stream</h2>
+            <p class="panel-subtitle">Topic: <code>iot.reefer.telemetry.v1</code> &rarr; Snowflake / SQLite Raw Landing</p>
+          </div>
+        </div>
+        <div class="feed-list code-feed" id="kafkaStreamList"></div>
+      </div>
+
+      <!-- Panel 3: Power BI & dbt Analytics Architecture Hub -->
+      <div class="panel powerbi-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Power BI Star-Schema &amp; DB Warehouse</h2>
+            <p class="panel-subtitle">Live-synced CSV &amp; SQLite tables in <code>powerbi db/</code></p>
+          </div>
+          <span class="badge-pill badge-pbi">POWER BI READY</span>
+        </div>
+
+        <div class="pbi-content">
+          <p class="pbi-desc">
+            Every simulation tick updates the relational warehouse (<code>powerbi db/database/atmosync.db</code>) and exports clean Star-Schema tables in <code>powerbi db/datasets/</code>:
+          </p>
+          <div class="pbi-links-grid">
+            <a class="pbi-download-card" href="/powerbi%20db/datasets/Fact_Spoilage_Arbitrage.csv" download>
+              <strong>Fact_Spoilage_Arbitrage.csv</strong>
+              <span>Real-time arbitrage margins, ETAs &amp; reroute recommendations</span>
+            </a>
+            <a class="pbi-download-card" href="/powerbi%20db/datasets/Fact_IoT_Telemetry.csv" download>
+              <strong>Fact_IoT_Telemetry.csv</strong>
+              <span>High-frequency sensor time-series (Temp, RH, Vibration, CO2)</span>
+            </a>
+            <a class="pbi-download-card" href="/powerbi%20db/datasets/Dim_Commodities.csv" download>
+              <strong>Dim_Commodities.csv</strong>
+              <span>Q10 degradation factors, optimal cold-chain thresholds &amp; cargo values</span>
+            </a>
+            <a class="pbi-download-card" href="/powerbi%20db/datasets/Dim_Markets.csv" download>
+              <strong>Dim_Markets.csv</strong>
+              <span>Global port coordinates, spot price multipliers &amp; reroute fees</span>
+            </a>
+          </div>
+
+          <div class="pbi-code-preview">
+            <div class="code-preview-header">
+              <span>DAX Measure Preview (<code>powerbi db/dax/AtmoSync_DAX_Measures.dax</code>)</span>
+              <a href="/powerbi%20db/dax/AtmoSync_DAX_Measures.dax" target="_blank">Open Full DAX File &rarr;</a>
+            </div>
+            <pre><code>Total Spoilage Arbitrage ($) =
+SUMX(
+    FILTER(Fact_Spoilage_Arbitrage, Fact_Spoilage_Arbitrage[spoilage_arbitrage_usd] > 0),
+    Fact_Spoilage_Arbitrage[secondary_net_value_usd] - Fact_Spoilage_Arbitrage[primary_expected_value_usd]
+)</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="mock_data.js"></script>
+  <script src="charts.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

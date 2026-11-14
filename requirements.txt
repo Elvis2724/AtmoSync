@@ -1,0 +1,10 @@
+# AtmoSync Core Runtime
+# ---------------------
+# The core backend server (`backend/app.py`) and engine (`backend/atmosync_engine.py`)
+# run using Python 3.10+ standard library only (zero external dependencies required).
+#
+# Optional packages for dbt SQL modeling & notebook analysis:
+dbt-core>=1.7.0
+dbt-sqlite>=1.5.0
+pandas>=2.1.0
+requests>=2.31.0

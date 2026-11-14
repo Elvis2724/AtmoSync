@@ -1,0 +1,46 @@
+===============================================================================
+ATMOSYNC: SPOILAGE DEGRADATION & ARBITRAGE MATHEMATICAL SPECIFICATION
+===============================================================================
+
+1. MICRO-CLIMATE DEGRADATION MULTIPLIER (M_deg)
+-----------------------------------------------
+Perishable commodities degrade exponentially faster when internal reefer
+temperature exceeds optimal cold-chain targets (Arrhenius / Q10 rule),
+compounded by excess relative humidity and mechanical vibration shock:
+
+  Thermal Factor (F_temp)   = Q10 ^ (max(0, T_actual - T_optimal) / 10.0)
+  Humidity Factor (F_hum)   = 1.0 + (max(0, RH_actual - RH_optimal) / 10.0) * 0.42
+  Vibration Factor (F_vib)  = 1.0 + max(0, Vib_G - 0.35) * S_vib * 0.55
+
+  Degradation Multiplier (M_deg) = F_temp * F_hum * F_vib
+
+2. DYNAMIC TIME-TO-SPOILAGE (TTS)
+---------------------------------
+Commercial rejection occurs when cargo quality drops below 55.0%.
+
+  Nominal Burn Rate (%/hr)  = 45.0 / Base_Shelf_Life_Hours
+  Actual Burn Rate (%/hr)   = Nominal_Burn_Rate * M_deg
+  Usable Quality Buffer (%) = max(0.5, Quality_Remaining_Pct - 55.0)
+
+  Time_To_Spoilage (hrs)    = Usable_Quality_Buffer / Actual_Burn_Rate
+
+3. ARRIVAL QUALITY & COMMERCIAL REALIZATION FACTOR (R_qual)
+-----------------------------------------------------------
+For any destination port m with Great-Circle distance D_m (km):
+
+  ETA_m (hrs)          = (D_m / Vessel_Speed_kmh) + Port_Handling_Hours_m
+  Arrival_Quality_m    = max(0.0, Quality_Remaining_Pct - (ETA_m * Actual_Burn_Rate))
+
+Piecewise commercial realization curve:
+  - Arrival_Quality >= 80%: R_qual = 1.00 (Full Grade-A realization)
+  - 65% <= Arrival_Quality < 80%: R_qual = 0.55 + 0.45 * ((Q - 65) / 15)
+  - 55% <= Arrival_Quality < 65%: R_qual = 0.22 + 0.33 * ((Q - 55) / 10)
+  - Arrival_Quality < 55%: R_qual = 0.08 (Distressed salvage value only)
+
+4. SPOILAGE ARBITRAGE MARGIN ($)
+--------------------------------
+  Primary_Expected_Value ($) = Base_Cargo_Value * Spot_Multiplier_prim * R_qual_prim
+  Secondary_Net_Value ($)    = (Base_Cargo_Value * Spot_Multiplier_sec * R_qual_sec) - Reroute_Fee_sec
+
+  Spoilage_Arbitrage ($)     = max(0.0, max_sec(Secondary_Net_Value) - Primary_Expected_Value)
+===============================================================================
