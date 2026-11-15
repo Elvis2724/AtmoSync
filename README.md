@@ -1,3 +1,10 @@
+
+<p align="center">
+  <img src="assets/atmosync-logo.png" alt="AtmoSync Logo" width="180" height="180">
+</p>
+
+
+
 # AtmoSync: Micro-Climate Arbitrage Analytics & Cold-Chain BI
 
 AtmoSync is an end-to-end real-time cold-chain telemetry, ELT data warehouse, and quantitative **Spoilage Arbitrage** platform. It monitors perishable maritime reefer containers, models biological shelf-life degradation using Q10 / Arrhenius kinetics, and recommends profitable secondary port reroutes before cargo spoils.
@@ -82,7 +89,3 @@ atmosync777/
    - Import the custom theme from `powerbi db/theme/AtmoSync_Theme.json`.
    - Paste the measures from `powerbi db/dax/AtmoSync_DAX_Measures.dax`.
   
-
-<p align="center">
-  <img src="assets/atmosync-logo.png" alt="AtmoSync Logo" width="180" height="180">
-</p>
