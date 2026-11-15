@@ -13,6 +13,8 @@ _Detecting the drift before the decay_
 
 </div>
 
+---
+
 ##Overview
 
 AtmoSync is an advanced supply chain analytics and micro-climate engineering pipeline designed to monitor real-time, hyper-local sensor telemetry (temperature, humidity, vibration, GPS coordinates) inside shipping containers. By continuously computing "Spoilage Arbitrage", the system detects environmental drift, dynamically adjusts commodity shelf-life predictions, and recommends immediate rerouting to alternative secondary markets before cargo degrades, eliminating total inventory write-offs.
@@ -116,11 +118,12 @@ atmosync777/
 
 | Name | Role |
 | --- | --- |
-
 | [**Elvis T. Fernandes**](https://github.com/Elvis2724) | Originator, project lead, system architecture, AI pipeline, and research |
 | [**ABC**]() | Frontend and backend development & research |
 | [**DEF**]() | Frontend and backend development & research |
 | [**GHI**]() | Frontend and backend development & research |
+
+---
 
 <div align="center">
   
