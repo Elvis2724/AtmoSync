@@ -23,23 +23,32 @@ AtmoSync is an advanced supply chain analytics and micro-climate engineering pip
 
 ### IoT Telemetry Simulation
 
-Continuously generates high-frequency sensor payloads (container ID, timestamp, internal temperature, humidity, vibration, and GPS coordinates) via a modular Python simulator
+- High-Frequency Stream Generation: Emits time-series data at configurable intervals (e.g., every 15 minutes) across multiple concurrent active shipping containers.   - Multi-Parameter Tracking: Monitors vital transit telemetry fields simultaneously, including internal container temperature, relative humidity, mechanical vibration,    and live GPS coordinates (latitude/longitude).
+- Controlled Anomaly Injection: Programmatically introduces micro-climate drift and environmental stress scenarios (such as sudden cooling failures in specific           container units like CONT-A101) to test system resilience.   
 
 ### Dynamic Spoilage Modeling
 
-Automatically re-calculates adjusted commodity shelf-life thresholds in real time when internal container environments exceed ideal maximum specifications (e.g., Avocados, Strawberries, Pharmaceuticals).
+- Commodity-Specific Thresholds: Maintains relational master rules mapping sensitive goods (such as avocados, strawberries, and pharmaceutical vaccines) to their exact   ideal temperature and humidity bounds.   
+- Real-Time Shelf-Life Degradation: Instantly triggers mathematical decay models that scale down remaining base shelf-life days proportional to the degree and duration   of temperature excursions.   
+- Automated Risk Classification: Instantly flags containers in the database as either Optimal or At-Risk (Spoilage Accelerating) based on continuous metric evaluation.   
 
 ### Spoilage Arbitrage Engine
 
-Evaluates primary market destination pricing against alternate secondary regional markets relative to transit distance, computing immediate financial margin recovery values before goods degrade.
+- Market-to-Market Comparison: Compares primary destination market pricing and transport distances against alternate secondary or regional trading hubs.
+- Financial Margin Recovery: Computes potential revenue preservation by evaluating the trade-off between writing off degraded cargo versus capturing slightly lower       secondary market prices closer to the current route.
+- Intelligent Rerouting Logic: Generates automated actionable recommendations indicating precisely which alternate market hub minimizes total financial loss.   
 
 ### Interactive Frontend Command Consol
 
-A responsive dark-mode HTML/CSS monitoring interface displaying live fleet risk alerts and one-click shipment rerouting triggers.
+- Operations Control Center UI: Built using a responsive, modern dark-mode interface optimized for logistics command centers and trading desks.
+- Live Fleet Risk Metrics: Features dynamic top-level summary cards tracking active container counts, compromised units, and total estimated financial arbitrage          recovery.
+- One-Click Action Triggers: Provides interactive control buttons allowing operators to instantly acknowledge alerts and dispatch simulated shipment reroute              instructions. 
 
 ### Executive Power BI Integration
 
-With clean database exports (atmosync_powerbi_ready.csv), you can drop the data straight into Power BI to build professional executive reports, live anomaly trend lines, and geospatial route maps
+- Pre-Modeled Relational Exports: Automatically bundles cleaned telemetry views and master lookup tables into structured CSV exports (atmosync_powerbi_ready.csv).
+- Geospatial & Trend Analytics: Optimized for immediate ingestion into Power BI to plot real-time container routes on maps and track temperature fluctuations against     critical thresholds.
+- Executive Decision Support: Empowers logistics management teams with visual insights that drive immediate financial and operational decisions. 
 
 
 ## Technology stack
