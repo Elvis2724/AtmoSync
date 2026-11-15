@@ -81,3 +81,8 @@ atmosync777/
    - Load the 4 Star-Schema CSV tables from `powerbi db/datasets/` (or use `powerbi db/powerquery/PowerQuery_M_Loader.pq`).
    - Import the custom theme from `powerbi db/theme/AtmoSync_Theme.json`.
    - Paste the measures from `powerbi db/dax/AtmoSync_DAX_Measures.dax`.
+  
+
+<p align="center">
+  <img src="assets/atmosync-logo.png" alt="AtmoSync Logo" width="180" height="180">
+</p>
