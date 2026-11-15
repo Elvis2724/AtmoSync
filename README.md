@@ -15,29 +15,29 @@ _Detecting the drift before the decay_
 
 ---
 
-##Overview
+## Overview
 
 AtmoSync is an advanced supply chain analytics and micro-climate engineering pipeline designed to monitor real-time, hyper-local sensor telemetry (temperature, humidity, vibration, GPS coordinates) inside shipping containers. By continuously computing "Spoilage Arbitrage", the system detects environmental drift, dynamically adjusts commodity shelf-life predictions, and recommends immediate rerouting to alternative secondary markets before cargo degrades, eliminating total inventory write-offs.
 
-##Features
+## Features
 
-###IoT Telemetry Simulation
+### IoT Telemetry Simulation
 
 Continuously generates high-frequency sensor payloads (container ID, timestamp, internal temperature, humidity, vibration, and GPS coordinates) via a modular Python simulator
 
-###Dynamic Spoilage Modeling
+### Dynamic Spoilage Modeling
 
 Automatically re-calculates adjusted commodity shelf-life thresholds in real time when internal container environments exceed ideal maximum specifications (e.g., Avocados, Strawberries, Pharmaceuticals).
 
-###Spoilage Arbitrage Engine
+### Spoilage Arbitrage Engine
 
 Evaluates primary market destination pricing against alternate secondary regional markets relative to transit distance, computing immediate financial margin recovery values before goods degrade.
 
-###Interactive Frontend Command Consol
+### Interactive Frontend Command Consol
 
 A responsive dark-mode HTML/CSS monitoring interface displaying live fleet risk alerts and one-click shipment rerouting triggers.
 
-###Executive Power BI Integration
+### Executive Power BI Integration
 
 With clean database exports (atmosync_powerbi_ready.csv), you can drop the data straight into Power BI to build professional executive reports, live anomaly trend lines, and geospatial route maps
 
