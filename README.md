@@ -1,17 +1,56 @@
+<div align="center">
 
-<p align="center">
-  <img src="assets/atmosync-logo.png" alt="AtmoSync Logo" width="180" height="180">
-</p>
+# AtmoSync
+
+### A Micro-Climate Arbitrage Analytics & Cold-Chain BI
+
+_Detecting the drift before the decay_
+
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Database](https://img.shields.io/badge/Database-SQLite-lightgrey.svg)](https://www.sqlite.org/)
+[![Power BI](https://img.shields.io/badge/Power%20BI-Ready-orange.svg)](https://powerbi.microsoft.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+</div>
+
+##Overview
+
+AtmoSync is an advanced supply chain analytics and micro-climate engineering pipeline designed to monitor real-time, hyper-local sensor telemetry (temperature, humidity, vibration, GPS coordinates) inside shipping containers. By continuously computing "Spoilage Arbitrage", the system detects environmental drift, dynamically adjusts commodity shelf-life predictions, and recommends immediate rerouting to alternative secondary markets before cargo degrades, eliminating total inventory write-offs.
+
+##Features
+
+###IoT Telemetry Simulation
+
+Continuously generates high-frequency sensor payloads (container ID, timestamp, internal temperature, humidity, vibration, and GPS coordinates) via a modular Python simulator
+
+###Dynamic Spoilage Modeling
+
+Automatically re-calculates adjusted commodity shelf-life thresholds in real time when internal container environments exceed ideal maximum specifications (e.g., Avocados, Strawberries, Pharmaceuticals).
+
+###Spoilage Arbitrage Engine
+
+Evaluates primary market destination pricing against alternate secondary regional markets relative to transit distance, computing immediate financial margin recovery values before goods degrade.
+
+###Interactive Frontend Command Consol
+
+A responsive dark-mode HTML/CSS monitoring interface displaying live fleet risk alerts and one-click shipment rerouting triggers.
+
+###Executive Power BI Integration
+
+With clean database exports (atmosync_powerbi_ready.csv), you can drop the data straight into Power BI to build professional executive reports, live anomaly trend lines, and geospatial route maps
 
 
+## Technology stack
 
-# AtmoSync: Micro-Climate Arbitrage Analytics & Cold-Chain BI
+| Layer | Technologies |
+| --- | --- |
+| Backend & Storage | Python 3.10+, SQLite, SQL |
+| Data Processing & Analytics | Pandas, NumPy, Relational Joins & Case-Based Aggregations |
+| Frontend & Dashboard UI | HTML5, CSS3 |
+| Visualization & BI | Power BI Desktop |
 
-AtmoSync is an end-to-end real-time cold-chain telemetry, ELT data warehouse, and quantitative **Spoilage Arbitrage** platform. It monitors perishable maritime reefer containers, models biological shelf-life degradation using Q10 / Arrhenius kinetics, and recommends profitable secondary port reroutes before cargo spoils.
 
----
-
-## Project Directory Structure
+## Project Structure
 
 Files are organized so that `frontend/`, `backend/`, and `powerbi db/` only contain the files that strictly belong to them, while shared datasets, dbt SQL models, documentation, and roadmap files live in dedicated root folders and files:
 
@@ -73,19 +112,18 @@ atmosync777/
     └── scripts/
         └── powerbi_streaming_push.py           # Real-time Power BI Push Dataset REST API streamer
 ```
+## Team
 
----
+| Name | Role |
+| --- | --- |
 
-## Quick Start
+| [**Elvis T. Fernandes**](https://github.com/Elvis2724) | Originator, project lead, system architecture, AI pipeline, and research |
+| [**ABC**]() | Frontend and backend development & research |
+| [**DEF**]() | Frontend and backend development & research |
+| [**GHI**]() | Frontend and backend development & research |
 
-1. **Launch the Backend Server & Live Dashboard**:
-   ```powershell
-   python backend/app.py
-   ```
-   Or double-click `start_server.bat`. Then open **http://127.0.0.1:8050** in your browser.
-
-2. **Connect Power BI Desktop**:
-   - Load the 4 Star-Schema CSV tables from `powerbi db/datasets/` (or use `powerbi db/powerquery/PowerQuery_M_Loader.pq`).
-   - Import the custom theme from `powerbi db/theme/AtmoSync_Theme.json`.
-   - Paste the measures from `powerbi db/dax/AtmoSync_DAX_Measures.dax`.
+<div align="center">
   
+_Tracking the pulse inside the container to turn potential spoilage into peak profit._
+
+</div>
