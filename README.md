@@ -66,7 +66,7 @@ AtmoSync is an advanced supply chain analytics and micro-climate engineering pip
 Files are organized so that `frontend/`, `backend/`, and `powerbi db/` only contain the files that strictly belong to them, while shared datasets, dbt SQL models, documentation, and roadmap files live in dedicated root folders and files:
 
 ```text
-atmosync777/
+atmosync/
 ├── README.md                                   # Project overview & quick-start guide
 ├── roadmap.txt                                 # Phased implementation roadmap & milestones
 ├── requirements.txt                            # Python runtime & optional analytics dependencies
