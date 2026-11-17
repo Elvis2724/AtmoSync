@@ -1,75 +1,163 @@
-===============================================================================
-ATMOSYNC: MICRO-CLIMATE ARBITRAGE ANALYTICS & COLD-CHAIN BI
-PROJECT ROADMAP & IMPLEMENTATION PHASES
-===============================================================================
+================================================================================
 
-OVERVIEW
---------
-AtmoSync is a real-time supply-chain telemetry and quantitative spoilage
-arbitrage platform. It ingests high-frequency IoT container sensor streams
-(temperature, relative humidity, vibration shock, CO2, ethylene, GPS), computes
-dynamic Q10 / Arrhenius cargo degradation velocity, and evaluates whether
-rerouting an at-risk reefer container to a closer secondary port yields higher
-net cargo value ("Spoilage Arbitrage").
+ATMOSYNC: MICRO-CLIMATE SUPPLY CHAIN ARBITRAGE ANALYTICS PIPELINE
 
--------------------------------------------------------------------------------
-PHASE 1: IOT TELEMETRY INGESTION & SEED DATA CATALOG (COMPLETED)
--------------------------------------------------------------------------------
-[x] Establish reference datasets in `data/`:
-    - `data/commodities.json`: Perishable profiles (Avocados, Berries, A5 Wagyu,
-      Monoclonal Biologics, Cut Orchids, Bluefin Tuna) with Q10 thermal factors.
-    - `data/markets.json`: Global port hubs, GPS coordinates, spot price
-      multipliers, port handling times, and reroute fees.
-    - `data/fleet_containers.json`: Active maritime reefer fleet state.
-[x] Simulate Apache Kafka telemetry stream (`iot.reefer.telemetry.v1`) with
-    micro-climate drift modes (Thermal Drift, Humidity/Temp Spike, Vibration).
+End-to-End Implementation Roadmap
 
--------------------------------------------------------------------------------
-PHASE 2: ELT WAREHOUSE & DBT STAGING LAYER (COMPLETED)
--------------------------------------------------------------------------------
-[x] Relational analytical warehouse in `powerbi db/database/atmosync.db`:
-    - `raw_iot_stream`: Raw Kafka JSON event landing table.
-    - `stg_telemetry`: Cleaned, typed sensor & GPS time-series table.
-    - `mart_spoilage_arbitrage`: Executive arbitrage & reroute decision table.
-[x] SQL transformation models in `dbt/models/`:
-    - `stg_iot_telemetry.sql`: JSON payload extraction & sensor bounds filtering.
-    - `mart_spoilage_arbitrage.sql`: Q10 degradation & time-to-spoilage marts.
+Status: Active Development | Architecture: Python, SQLite, HTML/CSS, Power BI
 
--------------------------------------------------------------------------------
-PHASE 3: QUANTITATIVE SPOILAGE ARBITRAGE ENGINE (COMPLETED)
--------------------------------------------------------------------------------
-[x] Modularize backend engine into dedicated Python modules inside `backend/`:
-    - `config.py`: Central workspace paths & simulation parameters.
-    - `models.py`: Dataclasses for CommodityProfile, MarketHub, ContainerState.
-    - `arbitrage_calculator.py`: Haversine routing, Arrhenius/Q10 degradation
-      curve modeling, and Primary vs. Secondary Market Net Value optimizer.
-    - `database_manager.py`: SQLite ELT persistence and Star-Schema CSV sync.
-    - `atmosync_engine.py`: Core simulation orchestrator & alert dispatcher.
-    - `app.py`: Threading HTTP & REST API server (`http://127.0.0.1:8050`).
+================================================================================
 
--------------------------------------------------------------------------------
-PHASE 4: EXECUTIVE TRADING DESK UI & POWER BI INTEGRATION (COMPLETED)
--------------------------------------------------------------------------------
-[x] Modularize frontend application inside `frontend/`:
-    - `index.html`: Executive KPI strip, route map, inspector & trading table.
-    - `styles.css`: Institutional dark-mode quantitative styling.
-    - `mock_data.js`: Standalone offline fallback dataset & state generator.
-    - `charts.js`: Interactive SVG global maritime map & HTML5 Canvas curves.
-    - `dashboard.js`: Live API polling, anomaly injection, and reroute actions.
-[x] Power BI Star-Schema & DAX toolkit inside `powerbi db/`:
-    - Auto-synced Star-Schema CSVs (`Fact_Spoilage_Arbitrage.csv`,
-      `Fact_IoT_Telemetry.csv`, `Dim_Commodities.csv`, `Dim_Markets.csv`).
-    - `AtmoSync_DAX_Measures.dax`, `PowerQuery_M_Loader.pq`, `AtmoSync_Theme.json`.
 
--------------------------------------------------------------------------------
-PHASE 5: FUTURE ENHANCEMENTS (UPCOMING MILESTONES)
--------------------------------------------------------------------------------
-[ ] Live Weather & Ocean Current API Overlay (NOAA / Open-Meteo Marine) to
-    dynamically adjust vessel speed and port congestion hours.
-[ ] Multi-Leg Intermodal Rerouting (Sea-to-Air and Sea-to-Rail cold-chain handoff
-    cost/benefit optimization for ultra-high-value pharmaceuticals).
-[ ] Automated Carrier EDI / Webhook Integration for instant bill-of-lading
-    diversion orders and customs pre-clearance at secondary ports.
-[ ] Machine Learning Compressor Fault Prediction (LSTM anomaly detection on
-    compressor power draw and CO2 respiration curves 12 hours before thermal spike).
-===============================================================================
+
+1. EXECUTIVE SUMMARY & PROJECT VISION
+
+AtmoSync is a lightweight, high-performance micro-climate supply chain arbitrage 
+
+analytics pipeline designed to identify, calculate, and capitalize on perishable 
+
+inventory spoilage risks and regional price variances. By simulating real-time IoT 
+
+sensor telemetry (temperature, humidity, ethylene gas levels) and integrating logistics 
+
+freight cost factors against wholesale market rates, AtmoSync empowers supply chain 
+
+operators to execute optimal rerouting and dynamic inventory clearance decisions before 
+
+spoilage devaluation occurs.
+
+
+
+Core Technical Objectives:
+
+- Automated Telemetry Simulation: Generate high-fidelity synthetic micro-climate sensor 
+
+  streams mimicking transit conditions across multi-node distribution networks.
+
+- Spoilage Arbitrage Engine: Compute remaining shelf-life using Arrhenius reaction-rate 
+
+  kinetics adapted for perishables, comparing holding costs versus spot-market arbitrage gains.
+
+- Responsive Operations Dashboard: Deliver a clean HTML/CSS operational alert interface for 
+
+  real-time dispatchers alongside an executive Power BI Desktop reporting suite.
+
+
+
+--------------------------------------------------------------------------------
+
+2. COMPREHENSIVE TECHNOLOGY STACK
+
+--------------------------------------------------------------------------------
+
+- Backend / Ingestion: Python (Core data pipeline orchestration, telemetry simulation, API dev)
+
+- Data Storage: SQLite (Lightweight, zero-config relational database for local telemetry)
+
+- Frontend Interface: HTML/CSS (Lightweight operational dispatch alert interface)
+
+- Business Intelligence: Power BI Desktop (Executive reporting suite, financial modeling)
+
+- Version Control: Git & GitHub (Source code management, branch workflows, releases)
+
+
+
+--------------------------------------------------------------------------------
+
+3. PHASED IMPLEMENTATION ROADMAP
+
+--------------------------------------------------------------------------------
+
+
+
+Phase 1: Environment Setup & Data Architecture (Weeks 1-2)
+
+- Initialize Git repository structure and establish branching strategies on GitHub.
+
+- Design the SQLite schema for relational tracking:
+
+  * dim_warehouses
+
+  * dim_routes
+
+  * fact_sensor_telemetry
+
+  * fct_spoilage_arbitrage_summary
+
+- Develop Python ingestion scripts to simulate baseline IoT telemetry data feeds.
+
+
+
+Phase 2: Spoilage Arbitrage Logic & Pipeline Core (Weeks 3-4)
+
+- Implement perishable degradation algorithms incorporating temperature abuse factors and shelf-life decay models.
+
+- Build automated transformation scripts to aggregate telemetry into summary tables (e.g., generating fct_spoilage_arbitrage_summary.csv).
+
+- Establish error handling and automated logging for robust pipeline execution.
+
+
+
+Phase 3: Operational UI & Alert Interface (Weeks 5-6)
+
+- Design and code a responsive HTML/CSS dashboard for live dispatchers and warehouse managers.
+
+- Implement visual alert thresholds for high-risk transit batches facing imminent spoilage.
+
+- Connect local JSON/SQLite endpoints to feed live status indicators into the web interface.
+
+
+
+Phase 4: Power BI Integration & Executive Reporting (Weeks 7-8)
+
+- Connect Power BI Desktop directly to the SQLite database and processed CSV outputs.
+
+- Construct relational data models, calculated measures (DAX) for net arbitrage margin, and spoilage risk scoring.
+
+- Design interactive report pages featuring geographic route maps, financial impact waterfalls, and real-time alert tickers.
+
+
+
+Phase 5: Testing, Validation & Documentation (Weeks 9-10)
+
+- Conduct end-to-end integration testing simulating extreme weather events and supply chain bottlenecks.
+
+- Finalize project documentation, README architecture guides, and user manuals.
+
+- Prepare demonstration artifacts and deployment release tags for stakeholder presentation.
+
+
+
+--------------------------------------------------------------------------------
+
+4. RISK MANAGEMENT & MITIGATION STRATEGY
+
+--------------------------------------------------------------------------------
+
+- SQLite Concurrency Limitations (Medium Severity):
+
+  Mitigation: Keep ingestion batch sizes optimized; use connection pooling and transaction locking best practices in Python.
+
+- Telemetry Simulation Drift (Low Severity):
+
+  Mitigation: Implement seeded random generators and bounded boundary checks to ensure realistic environmental curves.
+
+- Power BI Refresh Bottlenecks (Low Severity):
+
+  Mitigation: Pre-aggregate heavy analytical metrics in SQLite/Pandas before ingestion into Power BI data models.
+
+
+
+--------------------------------------------------------------------------------
+
+5. SUCCESS METRICS & KEY DELIVERABLES
+
+--------------------------------------------------------------------------------
+
+- Fully Functional Repository: Clean, modular codebase hosted on GitHub with comprehensive version history.
+
+- Automated Analytics Pipeline: Python scripts capable of end-to-end simulation, SQLite persistence, and summary CSV exports.
+
+- Executive Power BI Dashboard: Fully interactive .pbix reporting suite demonstrating real-time supply chain arbitrage opportunities.
+
+================================================================================
