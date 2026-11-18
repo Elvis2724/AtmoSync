@@ -4,9 +4,9 @@ ATMOSYNC: JSON CONFIGURATION & LIVE TELEMETRY STREAM PIPELINE GUIDE
 
 ================================================================================
 
+---
 
-
-1. OVERVIEW & OBJECTIVES
+##1. OVERVIEW & OBJECTIVES
 
 This guide outlines the step-by-step configuration required to set up local JSON 
 
@@ -20,7 +20,7 @@ alerts.
 
 
 
-Key Configuration Components:
+##Key Configuration Components:
 
 - Stream Configuration (config.json): Defines connection endpoints, refresh intervals, 
 
@@ -34,7 +34,7 @@ Key Configuration Components:
 
   SQLite database.
 
-
+---
 
 --------------------------------------------------------------------------------
 
@@ -42,9 +42,9 @@ Key Configuration Components:
 
 --------------------------------------------------------------------------------
 
+---
 
-
-Step 1: Create the Configuration Schema (config.json)
+##Step 1: Create the Configuration Schema (config.json)
 
 Establish your base configuration file in your project root directory to manage 
 
@@ -90,7 +90,7 @@ stream parameters and simulation frequencies.
 
 
 
-Step 2: Structure the Live Telemetry Stream (telemetry_stream.json)
+##Step 2: Structure the Live Telemetry Stream (telemetry_stream.json)
 
 Format your incoming IoT sensor data payload to match the database ingestion schema.
 
@@ -154,9 +154,9 @@ Format your incoming IoT sensor data payload to match the database ingestion sch
 
 
 
-Step 3: Implement Python Ingestion Logic
+##Step 3: Implement Python Ingestion Logic
 
-Use Python to read, parse, and stream the JSON data into your local SQLite telemetry tables.
+          Use Python to read, parse, and stream the JSON data into your local SQLite telemetry tables.
 
 
 
@@ -225,12 +225,14 @@ if __name__ == '__main__':
     ingest_telemetry('config.json', 'telemetry_stream.json')
 
 
+---
 
 --------------------------------------------------------------------------------
 
-3. VERIFICATION & TROUBLESHOOTING
+##3. VERIFICATION & TROUBLESHOOTING
 
 --------------------------------------------------------------------------------
+---
 
 - JSON Syntax Validation: Ensure all brackets {} and quotation marks are properly 
 
@@ -245,6 +247,7 @@ if __name__ == '__main__':
   your local simulation load testing frequency.
 
 ================================================================================
+---
 
 {
     "liveServer.settings.port": 5501
