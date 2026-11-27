@@ -7,6 +7,52 @@ let latestPayload = null;
 let selectedContainerId = "ATMO-4091-AVO";
 let activeTableFilter = "ALL";
 let pollIntervalId = null;
+let standaloneMode = false;
+
+const fmtUSD = (val) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(val || 0);
+
+function showToast(msg) {
+  const banner = document.getElementById("toastBanner");
+  banner.textContent = msg;
+  banner.classList.remove("hidden");
+  clearTimeout(banner._hideTimer);
+  banner._hideTimer = setTimeout(() => banner.classList.add("hidden"), 4500);
+}
+
+async function fetchDashboardState() {
+  if (standaloneMode && latestPayload) {
+    if (latestPayload.auto_stream_enabled) {
+      latestPayload.kpis.total_events_ingested += latestPayload.containers.length;
+      latestPayload.containers.forEach((c) => {
+        c.temp_c = +(c.temp_c + (Math.random() - 0.46) * 0.14).toFixed(2);
+        const h = latestPayload.histories[c.container_id];
+        if (h) {
+          h.push({ tick: h.length + 1, temp_c: c.temp_c, humidity_pct: c.humidity_pct });
+          if (h.length > 35) h.shift();
+        }
+      });
+      renderDashboard(latestPayload);
+    }
+    return;
+  }
+  try {
+    const res = await fetch("/api/state");
+    if (!res.ok) throw new Error("Non-200");
+    const data = await res.json();
+    renderDashboard(data);
+  } catch (err) {
+    standaloneMode = true;
+    if (!latestPayload) {
+      latestPayload = createStandaloneState();
+      renderDashboard(latestPayload);
+    }
+  }
+}
 
 function populateAnomalyDropdown(containers) {
   const select = document.getElementById("anomalyContainerSelect");
